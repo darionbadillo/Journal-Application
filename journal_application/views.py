@@ -3,7 +3,7 @@ from django.shortcuts import *
 from django.http import HttpResponse
 from django.views import generic
 from .models import User, Notebook, Journal, Canvas 
-from .forms import CanvasForm, NotebookForm
+from .forms import *
     
 # Create your views here.
 def index(request):
@@ -86,7 +86,7 @@ def createCanvas(request, notebook_id):
 
 
 
-
+#Lists and Details generic views
 class userListView(generic.ListView):
     model = User
 class userDetailView(generic.DetailView):
@@ -105,7 +105,7 @@ class JournalListView(generic.ListView):
     model = Journal
 class JournalDetailView(generic.DetailView):
     model = Journal
-    
+
 class CanvasListView(generic.ListView):
     model = Canvas
 class CanvasDetailView(generic.DetailView):
