@@ -27,5 +27,5 @@ urlpatterns = [
     path('notebook/<int:notebook_id>/update_canvas/<int:canvas_id>/', views.updateCanvas, name='update_canvas'),
     
     # Notebook urls
-    path('notebook/update_notebook/<int:student_id>/', views.updateNotebook, name='update_notebook'),
+    path('notebook/update_notebook/<int:notebook_id>/', views.updateNotebook, name='update_notebook'),
 ]

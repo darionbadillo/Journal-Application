@@ -1,0 +1,9 @@
+{% extends 'journal_application/base_template.html' %}
+
+{% block content %}
+<h1>Project Name: {{ journal.title }}</h1>
+
+<p><strong>Description:</strong> {{ journal.description }}</p>
+<p><strong>Notebook:<a href="{{ project.portfolio.get_absolute_url }}">{{ journal.notebook.title }} </a>
+
+{% endblock %}

@@ -5,11 +5,12 @@
 
 <h2>All Notebooks:</h2>
 <ul class="list-group">
-    {% for book in notebooks.all %}
-    <li class="list-group-item">Title: {{ book.notebook.title }}
-        <p><strong>Notebook:{{ book.notebook.title }}
-            <a class="btn btn-primary" href="{{ book.notebook.get_absolute_url }}" role="button">View</a>
-        
+    {% for book in all_notebooks%}
+        <li class="list-group-item">
+            <strong>Title:</strong> <a href="{% url 'notebook-detail' book.id %}">{{ book.title }}</a>
+            <a href="{% url 'update_notebook' book.id %}" class="btn btn-sm btn-outline-secondary float-right">Edit</a>
+        </li>
+            
     {%endfor%}
 </ul>
 <a href="{% url 'create_notebook' %}" class="btn btn-primary">Create New Notebook</a>

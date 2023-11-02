@@ -7,7 +7,8 @@ from .forms import *
     
 # Create your views here.
 def index(request):
-    return render( request, 'journal_application/index.html',)
+    all_notebooks = Notebook.objects.all()
+    return render( request, 'journal_application/index.html', {'all_notebooks': all_notebooks})
 
 def createNotebook(request):
     form = NotebookForm()
@@ -27,7 +28,7 @@ def createNotebook(request):
 
 def createJournal(request, notebook_id):
     form = JournalForm()
-    notebook = notebook.objects.get(pk=notebook_id)
+    notebook = Notebook.objects.get(pk=notebook_id)
     
     if request.method == 'POST':
         # Create a new dictionary with form data and notebook_id
@@ -79,7 +80,7 @@ def updateJournal(request, notebook_id, Journal_id):
 #Creates a new Canvas
 def createCanvas(request, notebook_id):
     form = CanvasForm()
-    notebook = notebook.objects.get(pk=notebook_id)
+    notebook = Notebook.objects.get(pk=notebook_id)
     
     if request.method == 'POST':
         # Create a new dictionary with form data and notebook_id
@@ -137,12 +138,13 @@ def updateNotebook(request, notebook_id):
         form = NotebookForm(request.POST, instance=notebook)
         if form.is_valid():
             form.save()
-            return redirect('student-detail', notebook_id)
+            return redirect('notebook-detail', notebook_id)
         
     context = {'form': form, 'notebook': notebook} 
-    return render(request, 'notebook_application/update_project.html', context)
+    return render(request, 'journal_application/update_notebook.html', context)
 
 #Lists and Details generic views
+# Will activate when users are ready
 """ class userListView(generic.ListView):
     model = User
 class userDetailView(generic.DetailView):

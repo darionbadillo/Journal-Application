@@ -1,14 +1,13 @@
 {% extends 'journal_application/base_template.html' %}
 
 {% block content %}
-<h1>Notebook Title: {{ notebook.title }}</h1>
+<h1><Strong>{{ notebook.title }}</Strong></h1>
 
 
 <p><strong>About:</strong> {{ notebook.about }}</p>
 
 <h3>Journals</h3>
 
-<a class="btn btn-primary" href="{% url 'create_journal' notebook.id %}" role="button">New</a>
 <ul>
     {% for journal in notebook.journal_set.all %}
 
@@ -17,11 +16,11 @@
             <a class="btn btn-primary" href="{% url 'update_journal' notebook.id journal.id %}" role="button">Update</a>
             <a class="btn btn-danger" href="{% url 'delete_journal' notebook.id journal.id %}" role ="button">Delete</a></li>
     {% endfor %}
+    <a class="btn btn-primary" href="{% url 'create_journal' notebook.id %}" role="button">New</a>
 </ul>
 
 <h3>Canvases</h3>
 
-<a class="btn btn-primary" href="{% url 'create_canvas' notebook.id %}" role="button">New</a>
 <ul>
     {% for canvas in notebook.canvas_set.all %}
 
@@ -30,6 +29,7 @@
         <a class="btn btn-primary" href="{% url 'update_canvas' notebook.id canvas.id %}" role="button">Update</a>
         <a class="btn btn-danger" href="{% url 'delete_canvas' notebook.id canvas.id %}" role ="button">Delete</a></li>
     {% endfor %}
+    <a class="btn btn-primary" href="{% url 'create_canvas' notebook.id %}" role="button">New</a>
 </ul>
 
 {% endblock %}
