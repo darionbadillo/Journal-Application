@@ -9,6 +9,22 @@ from .forms import *
 def index(request):
     return render( request, 'journal_application/index.html',)
 
+def createNotebook(request):
+    form = NotebookForm()
+    
+    if request.method == 'POST':
+        form = NotebookForm(request.POST)
+        if form.is_valid():
+            # Save the form to create a Notebook instance
+            notebook = form.save()
+            notebook.save()
+            # Redirect back to the notebook detail page
+            return redirect('notebook-detail', notebook.id)
+
+    context = {'form': form}
+    return render(request, 'journal_application/Notebook_form.html', context)
+
+
 def createJournal(request, notebook_id):
     form = JournalForm()
     notebook = notebook.objects.get(pk=notebook_id)
@@ -112,25 +128,25 @@ def updateCanvas(request, notebook_id, Canvas_id):
     context = {'form': form, 'notebook_id': notebook_id, 'Canvas': Canvas} 
     return render(request, 'journal_application/update_Canvas.html', context)
 
-def updateNotebook(request, user_id):
+def updateNotebook(request, notebook_id):
     
-    notebook = Notebook.objects.get(id=user_id)    
+    notebook = Notebook.objects.get(id=notebook_id)    
     
     form = NotebookForm(instance=notebook)
     if request.method == 'POST':
         form = NotebookForm(request.POST, instance=notebook)
         if form.is_valid():
             form.save()
-            return redirect('student-detail', user_id)
+            return redirect('student-detail', notebook_id)
         
-    context = {'form': form, 'notebook': notebook, 'student': user_id} 
+    context = {'form': form, 'notebook': notebook} 
     return render(request, 'notebook_application/update_project.html', context)
 
 #Lists and Details generic views
-class userListView(generic.ListView):
+""" class userListView(generic.ListView):
     model = User
 class userDetailView(generic.DetailView):
-    model = User
+    model = User """
 
 class notebookDetailView(generic.DetailView):
     model = Notebook 

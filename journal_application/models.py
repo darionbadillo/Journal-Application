@@ -2,8 +2,8 @@ from django.db import models
 from django.urls import reverse
   
 
-# Create your models here.
-class User(models.Model):
+# Cannot implement yet because we need are not implementing users yet
+""" class User(models.Model):
 
     name = models.CharField(max_length=200)
     email = models.CharField("Email", max_length=200)
@@ -16,19 +16,19 @@ class User(models.Model):
     #if you define this method then Django will automatically
     # add a "View on Site" button to the model's record editing screens in the Admin site
     def get_absolute_url(self):
-        return reverse('user-detail', args=[str(self.id)])
+        return reverse('user-detail', args=[str(self.id)]) """
     
 class Notebook(models.Model):
     
     title = models.CharField(max_length=200)
-    user_email = models.CharField("Email", max_length=200)
     about = models.CharField(max_length=1000, blank = True, default='')
+    private = models.BooleanField(default=False)
     
     #Define default String to return the name for representing the Model object."
     def __str__(self):
         return self.title
 
-    user = models.ForeignKey(User, on_delete=models.CASCADE, default = None)
+    #user = models.ForeignKey(User, on_delete=models.CASCADE, default = None)
     
     #Returns the URL to access a particular instance of MyModelName.
     #if you define this method then Django will automatically
