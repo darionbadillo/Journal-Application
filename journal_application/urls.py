@@ -8,9 +8,9 @@ urlpatterns = [
 # name='index' parameter is to dynamically create url
 # example in html <a href="{% url 'index' %}">Home</a>.
     path('', views.index, name='index'),
-    path('users/', views.StudentListView.as_view(), name= 'students'),
-    path('user/<int:pk>', views.StudentDetailView.as_view(), name='student-detail'),
-    path('notebook/<int:pk>', views.NotebookDetailView.as_view(), name='notebook-detail'),
+    path('users/', views.userListView.as_view(), name= 'users'),
+    path('user/<int:pk>', views.userDetailView.as_view(), name='user-detail'),
+    path('notebook/<int:pk>', views.notebookDetailView.as_view(), name='notebook-detail'),
     
     # Journal urls
     path('journals/', views.JournalListView.as_view(), name= 'journals'),
@@ -22,7 +22,7 @@ urlpatterns = [
     # Canvas urls
     path('canvases/', views.CanvasListView.as_view(), name= 'canvases'),
     path('canvases/<int:pk>', views.JournalDetailView.as_view(), name='canvas-detail'),
-    path('notebook/<int:notebook_id>/create_canvas/', views.createJournal, name='create_journal'),
+    path('notebook/<int:notebook_id>/create_canvas/', views.createCanvas, name='create_canvas'),
     path('notebook/<int:notebook_id>/delete_canvas/<int:canvas_id>/', views.deleteCanvas, name='delete_canvas'),
     path('notebook/<int:notebook_id>/update_canvas/<int:canvas_id>/', views.updateCanvas, name='update_canvas'),
     

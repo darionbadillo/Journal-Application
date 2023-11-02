@@ -84,7 +84,47 @@ def createCanvas(request, notebook_id):
     context = {'form': form}
     return render(request, 'journal_application/Canvas_form.html', context)
 
+# Deletes Journals
+def deleteCanvas(request, Canvas_id, notebook_id):
+    # Gets the Journal to delete
+    Journal = get_object_or_404(Journal, pk=Canvas_id)
+    
+    # Deletes the Journal if the request method is POST
+    if request.method == 'POST':
+        Canvas.delete()
+        return redirect('notebook-detail', notebook_id)
 
+    # Renders the delete Journal page
+    context = {'Canvas': Canvas}
+    return render(request, 'journal_application/delete_Journal.html', context)
+
+#Updates an existing journal
+def updateCanvas(request, notebook_id, Canvas_id):
+    Canvas = get_object_or_404(Canvas, pk=Canvas_id)
+    
+    form = JournalForm(instance=Journal)
+    if request.method == 'POST':
+        form = CanvasForm(request.POST, instance=Canvas)
+        if form.is_valid():
+            form.save()
+            return redirect('notebook-detail', notebook_id)
+        
+    context = {'form': form, 'notebook_id': notebook_id, 'Canvas': Canvas} 
+    return render(request, 'journal_application/update_Canvas.html', context)
+
+def updateNotebook(request, user_id):
+    
+    notebook = Notebook.objects.get(id=user_id)    
+    
+    form = NotebookForm(instance=notebook)
+    if request.method == 'POST':
+        form = NotebookForm(request.POST, instance=notebook)
+        if form.is_valid():
+            form.save()
+            return redirect('student-detail', user_id)
+        
+    context = {'form': form, 'notebook': notebook, 'student': user_id} 
+    return render(request, 'notebook_application/update_project.html', context)
 
 #Lists and Details generic views
 class userListView(generic.ListView):
