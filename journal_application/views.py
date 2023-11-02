@@ -2,7 +2,7 @@ from typing import Any
 from django.shortcuts import *
 from django.http import HttpResponse
 from django.views import generic
-from .models import User, Notebook, Journal, Canvas 
+from .models import *
 from .forms import *
     
 # Create your views here.
