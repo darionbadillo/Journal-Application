@@ -9,13 +9,12 @@ The base environment is set up utilizing your command line.
 
 1. Open command line
 2. Create a local repository to store the code you're working on from this repo
-    - Use these commands in your command line
-        1. `mkdir repos`
-        2. `cd repos`
-        3. `mkdir journal`
-        4. `cd journal`
-        5. `git init`
-        6. `git clone https://github.com/darionbadillo/Journal-Application.git`
+    1. `mkdir repos`
+    2. `cd repos`
+    3. `mkdir journal`
+    4. `cd journal`
+    5. `git init`
+    6. `git clone https://github.com/darionbadillo/Journal-Application.git`
 3. You will need these three commands for the command line to get your server running every time. Multiple Command Prompt windows will be needed.
     - `cd C:\Your\Location\repos\journal`
         - This is only used if you're not currently in the required directory.
