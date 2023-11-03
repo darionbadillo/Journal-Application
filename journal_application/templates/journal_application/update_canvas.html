@@ -11,8 +11,10 @@
         {% for field in form %}
         <div class="mb-3">
             <label for="{{ field.id_for_label }}" class="form-label">{{ field.label }}</label>
-            {{ field.errors.as_text }} <!-- Display field errors -->
-            {{ field }} <!-- This will render each field -->
+            {{ field.errors.as_text }}
+            <!-- Display field errors -->
+            {{ field }}
+            <!-- This will render each field -->
         </div>
         {% endfor %}
 

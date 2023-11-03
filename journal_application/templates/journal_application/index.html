@@ -6,13 +6,14 @@
 <h2>All Notebooks:</h2>
 <ul class="list-group">
     {% for book in all_notebooks%}
-        <li class="list-group-item">
-            <strong>Title:</strong> <a href="{% url 'notebook-detail' book.id %}" style="color: {{ book.color }};">{{ book.title }}</a>
+    <li class="list-group-item">
+        <strong>Title:</strong> <a href="{% url 'notebook-detail' book.id %}"
+            style="color: {{ book.color }};">{{ book.title }}</a>
 
-            <a href="{% url 'update_notebook' book.id %}" class="btn btn-sm btn-outline-secondary float-right">Edit</a>
-            <a href="{% url 'delete_notebook' book.id %}" class="btn btn-sm btn-outline-danger float-right">Delete</a>
-        </li>
-            
+        <a href="{% url 'update_notebook' book.id %}" class="btn btn-sm btn-outline-secondary float-right">Edit</a>
+        <a href="{% url 'delete_notebook' book.id %}" class="btn btn-sm btn-outline-danger float-right">Delete</a>
+    </li>
+
     {%endfor%}
 </ul>
 <a href="{% url 'create_notebook' %}" class="btn btn-primary">Create New Notebook</a>
