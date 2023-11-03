@@ -146,11 +146,9 @@ def createNotebook(request):
 - We will need to create a detail, and form template.
 
 **notebook_detail.html**
-
-{% extends 'journal_application/base_template.html' %}
-
-{% block content %}
 ```
+{% extends 'journal_application/base_template.html' %}
+{% block content %}
 <div class="container mt-5">
     <div class="card shadow">
         <div class="card-body">
