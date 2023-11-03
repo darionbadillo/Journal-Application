@@ -5,11 +5,14 @@ from django.views import generic
 from .models import *
 from .forms import *
     
-# Create your views here.
+# Home page view
 def index(request):
     all_notebooks = Notebook.objects.all()
     return render( request, 'journal_application/index.html', {'all_notebooks': all_notebooks})
 
+# Notebook views
+
+# Creates a new Notebook
 def createNotebook(request):
     form = NotebookForm()
     
@@ -23,9 +26,38 @@ def createNotebook(request):
             return redirect('notebook-detail', notebook.id)
 
     context = {'form': form}
-    return render(request, 'journal_application/Notebook_form.html', context)
+    return render(request, 'journal_application/notebook_form.html', context)
 
+def updateNotebook(request, notebook_id):
+    
+    notebook = Notebook.objects.get(id=notebook_id)    
+    
+    form = NotebookForm(instance=notebook)
+    if request.method == 'POST':
+        form = NotebookForm(request.POST, instance=notebook)
+        if form.is_valid():
+            form.save()
+            return redirect('notebook-detail', notebook_id)
+        
+    context = {'form': form, 'notebook': notebook} 
+    return render(request, 'journal_application/update_notebook.html', context)
 
+def deleteNotebook(request, notebook_id):
+    # Gets the Journal to delete
+    notebook = get_object_or_404(Notebook, pk=notebook_id)
+    
+    # Deletes the Journal if the request method is POST
+    if request.method == 'POST':
+        notebook.delete()
+        return redirect('/')
+
+    # Renders the delete Journal page
+    context = {'Notebook': notebook}
+    return render(request, 'journal_application/delete_Notebook.html', context)
+
+# Journal views
+
+# Creates a new Journal
 def createJournal(request, notebook_id):
     form = JournalForm()
     notebook = Notebook.objects.get(pk=notebook_id)
@@ -50,34 +82,37 @@ def createJournal(request, notebook_id):
     return render(request, 'journal_application/Journal_form.html', context)
 
 # Deletes Journals
-def deleteJournal(request, Journal_id, notebook_id):
+def deleteJournal(request, journal_id, notebook_id):
     # Gets the Journal to delete
-    Journal = get_object_or_404(Journal, pk=Journal_id)
+    journal = get_object_or_404(Journal, pk=journal_id)
     
     # Deletes the Journal if the request method is POST
     if request.method == 'POST':
-        Journal.delete()
+        journal.delete()
         return redirect('notebook-detail', notebook_id)
 
     # Renders the delete Journal page
-    context = {'Journal': Journal}
+    context = {'Journal': journal}
     return render(request, 'journal_application/delete_Journal.html', context)
 
 #Updates an existing journal
-def updateJournal(request, notebook_id, Journal_id):
-    Journal = get_object_or_404(Journal, pk=Journal_id)
+def updateJournal(request, notebook_id, journal_id):
+    journal = get_object_or_404(Journal, pk=journal_id)
     
-    form = JournalForm(instance=Journal)
+    form = JournalForm(instance=journal)
     if request.method == 'POST':
-        form = JournalForm(request.POST, instance=Journal)
+        form = JournalForm(request.POST, instance=journal)
         if form.is_valid():
             form.save()
             return redirect('notebook-detail', notebook_id)
         
-    context = {'form': form, 'notebook_id': notebook_id, 'Journal': Journal} 
-    return render(request, 'journal_application/update_Journal.html', context)
+    context = {'form': form, 'notebook_id': notebook_id, 'Journal': journal} 
+    return render(request, 'journal_application/update_journal.html', context)
 
-#Creates a new Canvas
+
+# Canvas views
+
+# Creates a new Canvas
 def createCanvas(request, notebook_id):
     form = CanvasForm()
     notebook = Notebook.objects.get(pk=notebook_id)
@@ -102,46 +137,33 @@ def createCanvas(request, notebook_id):
     return render(request, 'journal_application/Canvas_form.html', context)
 
 # Deletes Journals
-def deleteCanvas(request, Canvas_id, notebook_id):
+def deleteCanvas(request, canvas_id, notebook_id):
     # Gets the Journal to delete
-    Journal = get_object_or_404(Journal, pk=Canvas_id)
+    canvas = get_object_or_404(Canvas, pk=canvas_id)
     
     # Deletes the Journal if the request method is POST
     if request.method == 'POST':
-        Canvas.delete()
+        canvas.delete()
         return redirect('notebook-detail', notebook_id)
 
     # Renders the delete Journal page
-    context = {'Canvas': Canvas}
-    return render(request, 'journal_application/delete_Journal.html', context)
+    context = {'Canvas': canvas}
+    return render(request, 'journal_application/delete_Canvas.html', context)
 
 #Updates an existing journal
-def updateCanvas(request, notebook_id, Canvas_id):
-    Canvas = get_object_or_404(Canvas, pk=Canvas_id)
+def updateCanvas(request, notebook_id, canvas_id):
+    canvas = get_object_or_404(Canvas, pk=canvas_id)
     
-    form = JournalForm(instance=Journal)
+    form = CanvasForm(instance=canvas)
     if request.method == 'POST':
-        form = CanvasForm(request.POST, instance=Canvas)
+        form = CanvasForm(request.POST, instance=canvas)
         if form.is_valid():
             form.save()
             return redirect('notebook-detail', notebook_id)
         
-    context = {'form': form, 'notebook_id': notebook_id, 'Canvas': Canvas} 
+    context = {'form': form, 'notebook_id': notebook_id, 'Canvas': canvas} 
     return render(request, 'journal_application/update_Canvas.html', context)
 
-def updateNotebook(request, notebook_id):
-    
-    notebook = Notebook.objects.get(id=notebook_id)    
-    
-    form = NotebookForm(instance=notebook)
-    if request.method == 'POST':
-        form = NotebookForm(request.POST, instance=notebook)
-        if form.is_valid():
-            form.save()
-            return redirect('notebook-detail', notebook_id)
-        
-    context = {'form': form, 'notebook': notebook} 
-    return render(request, 'journal_application/update_notebook.html', context)
 
 #Lists and Details generic views
 # Will activate when users are ready

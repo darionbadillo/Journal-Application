@@ -34,12 +34,14 @@
                             My Notebooks
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="notebooksDropdown">
-                            {% for notebook in notebooks.all %} <!-- user.notebooks.all when implementing users-->
-                                <li><a class="dropdown-item" href="{% url 'notebook-detail' pk=notebook.pk %}">{{ notebook.name }}</a></li>
+                            {% for notebook in all_notebooks %} <!-- user.notebooks.all when implementing users-->
+                                <li><a class="dropdown-item" href="{% url 'notebook-detail' pk=notebook.pk %}">{{ notebook.title }}</a></li>
                             {% endfor %}
                             <li><hr class="dropdown-divider"></li>
                             <li><a class="dropdown-item" href="{% url 'create_notebook' %}">Create New Notebook</a></li>
                         </ul>
+                        <button id="darkModeToggle">Toggle Dark Mode</button>
+                        <script src="{% static 'dark_mode.js' %}"></script>
                     </li>
                 </ul>
             </div>
@@ -55,7 +57,7 @@
     <!-- Footer -->
     <footer class="mt-5 py-3 bg-secondary text-white">
         <div class="container">
-            <p class="mb-0">© {% now "Y" %} Notebook Application. All Rights Reserved.</p>
+            <p class="mb-0">© {% now "Y" %} Notebook Application.</p>
         </div>
     </footer>
 

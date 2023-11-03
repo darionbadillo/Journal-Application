@@ -1,6 +1,18 @@
 from django.db import models
 from django.urls import reverse
   
+COLOR_CHOICES = [
+    ('red', 'Red'),
+    ('blue', 'Blue'),
+    ('green', 'Green'),
+    ('purple', 'Purple'),
+    ('yellow', 'Yellow'),
+    ('orange', 'Orange'),
+    ('brown', 'Brown'),
+    ('black', 'Black'),
+    ('pink', 'Pink'),
+    ('white', 'White')
+]
 
 # Cannot implement yet because we need are not implementing users yet
 """ class User(models.Model):
@@ -23,6 +35,7 @@ class Notebook(models.Model):
     title = models.CharField(max_length=200)
     about = models.CharField(max_length=1000, blank = True, default='')
     private = models.BooleanField(default=False)
+    color = models.CharField(max_length=10, choices=COLOR_CHOICES, default='black')   
     
     #Define default String to return the name for representing the Model object."
     def __str__(self):

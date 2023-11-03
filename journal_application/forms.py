@@ -11,7 +11,7 @@ class JournalForm(ModelForm):
 class NotebookForm(ModelForm):
     class Meta:
         model = Notebook
-        fields =('title', 'about')
+        fields =('title', 'about', 'color')
         
 #create class for Canvas form
 class CanvasForm(ModelForm):

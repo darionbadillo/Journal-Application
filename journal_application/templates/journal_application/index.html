@@ -7,8 +7,10 @@
 <ul class="list-group">
     {% for book in all_notebooks%}
         <li class="list-group-item">
-            <strong>Title:</strong> <a href="{% url 'notebook-detail' book.id %}">{{ book.title }}</a>
+            <strong>Title:</strong> <a href="{% url 'notebook-detail' book.id %}" style="color: {{ book.color }};">{{ book.title }}</a>
+
             <a href="{% url 'update_notebook' book.id %}" class="btn btn-sm btn-outline-secondary float-right">Edit</a>
+            <a href="{% url 'delete_notebook' book.id %}" class="btn btn-sm btn-outline-danger float-right">Delete</a>
         </li>
             
     {%endfor%}
