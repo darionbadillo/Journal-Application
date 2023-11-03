@@ -4,6 +4,7 @@ Creating a journal application from the knowledge gained from my time in CS3300 
 Links:
 
 Github Repo: https://github.com/darionbadillo/Journal-Application
+
 Kanban: https://github.com/users/darionbadillo/projects/2
 
 ## Welcome to the app
