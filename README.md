@@ -210,12 +210,238 @@ def createNotebook(request):
 - <button type="submit" class="btn btn-primary">Submit</button>:
     - This is the submit button for the form. Once clicked, the form's data is submitted for processing.
 
-
+**URL**
+- Make sure to create a URL path inside the urls.py
+    - `path('notebook/create_notebook', views.createNotebook, name='create_notebook'),`
 
 ### Editing
+Editing a model is much easier.
+
+**UpdateNotebook View**
+1. The function retrieves the notebook to be updated based on the provided `notebook_id`.
+2. An instance of the `NotebookForm` is created with the retrieved notebook's data as its initial values.
+3. If the form is submitted using a POST request, the data is validated, the notebook is updated, and the user is redirected to the notebook's detail page.
+4. If the form is not submitted or there are validation errors, the form is displayed to the user for editing.
+
+```
+def updateNotebook(request, notebook_id):
+    
+    notebook = Notebook.objects.get(id=notebook_id)    
+    
+    form = NotebookForm(instance=notebook)
+    if request.method == 'POST':
+        form = NotebookForm(request.POST, instance=notebook)
+        if form.is_valid():
+            form.save()
+            return redirect('notebook-detail', notebook_id)
+        
+    context = {'form': form, 'notebook': notebook} 
+    return render(request, 'journal_application/update_notebook.html', context)
+
+```
+
+**Code Breakdown**
+
+- `def updateNotebook(request, notebook_id):`:
+  - Defines the function with two parameters: the `request` object and the `notebook_id` of the notebook to be updated.
+
+- `notebook = Notebook.objects.get(id=notebook_id)`:
+  - Fetches the notebook with the given `notebook_id` from the database.
+
+- `form = NotebookForm(instance=notebook)`:
+  - Initializes the `NotebookForm` with the data from the fetched notebook.
+
+- `if request.method == 'POST':`:
+  - Checks if the request is a POST request, which indicates that the form has been submitted for updating.
+
+- `form = NotebookForm(request.POST, instance=notebook)`:
+  - Binds the submitted POST data to the `NotebookForm`, while still associating it with the original notebook instance.
+
+- `if form.is_valid():`:
+  - Validates the form data. If all fields contain valid data:
+
+    - `form.save()`: Saves the updated notebook to the database.
+    
+    - `return redirect('notebook-detail', notebook_id)`: Redirects the user to the detail view of the updated notebook.
+
+- `context = {'form': form, 'notebook': notebook}`:
+  - Prepares the context data to be passed to the template. This includes both the form and the notebook instance.
+
+- `return render(request, 'journal_application/update_notebook.html', context)`:
+  - Renders the `update_notebook.html` template with the prepared context. This will display the form to the user, allowing them to make edits to the notebook.
+
+**update_notebook.html**
+1. The template is built on top of a base template to maintain a consistent look and feel across the application.
+2. A form is presented to the user, pre-filled with the existing details of a notebook.
+3. Validation errors, if any, are displayed next to the respective input fields.
+4. Upon submission, the form data is sent to the server for processing.
+
+```
+{% extends 'journal_application/base_template.html' %}
+
+{% block content %}
+
+<div class="container mt-5">
+    <h2 class="mb-4">Update Notebook</h2>
+
+    <form action="" method="POST" class="needs-validation" novalidate>
+        {% csrf_token %}
+
+        {% for field in form %}
+        <div class="mb-3">
+            <label for="{{ field.id_for_label }}" class="form-label">{{ field.label }}</label>
+            {{ field.errors.as_text }}
+            <!-- Display field errors -->
+            {{ field }}
+            <!-- This will render each field -->
+        </div>
+        {% endfor %}
+
+        <div class="mt-4">
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </div>
+    </form>
+</div>
+
+{% endblock %}
+```
+
+**Code Breakdown**
+
+- `{% extends 'journal_application/base_template.html' %}`:
+  - The template inherits from the `base_template.html` to maintain a consistent structure and design.
+
+- `{% block content %}`:
+  - This block defines the main content of the page, which will replace the corresponding block in the base template.
+
+- `<div class="container mt-5">`:
+  - Creates a container with a top margin for styling purposes.
+
+- `<h2 class="mb-4">Update Notebook</h2>`:
+  - Displays the heading "Update Notebook".
+
+- `<form action="" method="POST" class="needs-validation" novalidate>`:
+  - Begins the form with a POST method. The `needs-validation` and `novalidate` attributes are used for client-side form validation.
+
+- `{% csrf_token %}`:
+  - Inserts a CSRF token into the form for security purposes, which helps prevent Cross-Site Request Forgery attacks.
+
+- `{% for field in form %}`:
+  - Iterates over each field in the provided form.
+
+    - `<label for="{{ field.id_for_label }}" class="form-label">{{ field.label }}</label>`:
+      - Renders a label for the current form field.
+
+    - `{{ field.errors.as_text }}`:
+      - If there are validation errors for the current field, they are displayed in text format.
+
+    - `{{ field }}`:
+      - Renders the actual input element for the current field.
+
+- `<button type="submit" class="btn btn-primary">Submit</button>`:
+  - Creates a submit button for the form. When clicked, the form data will be sent to the server for processing.
+
+**URL**
+- `path('notebook/update_notebook/<int:notebook_id>/', views.updateNotebook, name='update_notebook'),`
+
 
 ### Deleting
 
+**deleteJournal View**
+1. The function retrieves a notebook based on its unique ID.
+2. If the user confirms the deletion (via a POST request), the notebook is deleted.
+3. The user is redirected to the home page after deletion.
+4. If the user lands on the page via a GET request, they are presented with a confirmation page for deletion.
+
+```
+def deleteNotebook(request, notebook_id):
+    # Gets the Journal to delete
+    notebook = get_object_or_404(Notebook, pk=notebook_id)
+    
+    # Deletes the Journal if the request method is POST
+    if request.method == 'POST':
+        notebook.delete()
+        return redirect('/')
+
+    # Renders the delete Journal page
+    context = {'Notebook': notebook}
+    return render(request, 'journal_application/delete_Notebook.html', context)
+```
+
+**Code Breakdown**
+
+- `def deleteNotebook(request, notebook_id):`:
+  - Defines the view function, accepting the request object and the unique ID of the notebook to delete.
+
+- `notebook = get_object_or_404(Notebook, pk=notebook_id)`:
+  - Tries to retrieve the notebook with the given ID (`notebook_id`). If it doesn't exist, the function will return a 404 Not Found response.
+
+- `if request.method == 'POST':`:
+  - Checks if the current request is a POST request (i.e., the user has confirmed the deletion).
+
+    - `notebook.delete()`:
+      - Deletes the notebook from the database.
+
+    - `return redirect('/')`:
+      - Redirects the user to the home page (root URL) after successful deletion.
+
+- `context = {'Notebook': notebook}`:
+  - Prepares the context to be passed to the template. This allows the template to display details about the notebook that's about to be deleted, so the user knows exactly what they're confirming.
+
+- `return render(request, 'journal_application/delete_Notebook.html', context)`:
+  - Renders the `delete_Notebook.html` template, providing it with the context. This will show the user a confirmation page to ensure they genuinely want to delete the notebook.
+
+**delete_notebook.html**
+```
+{% extends 'journal_application/base_template.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <h1 class="display-4 mb-4">Delete Notebook</h1>
+
+    <div class="alert alert-warning" role="alert">
+        <h4 class="alert-heading">Warning!</h4>
+        <p>Are you sure you want to delete this notebook? This action cannot be undone.</p>
+        <hr>
+        <p class="mb-0"><strong>Notebook Title:</strong> {{ Notebook.title }}</p>
+
+        {# Iterates through all journals and canvases for display. Displays a message if no canvases or journals exist #}
+        <p class="mb-0 mt-3"><strong>Journals in this Notebook:</strong></p>
+        <ul>
+            {% for journal in Notebook.journal_set.all %}
+            <li>{{ journal.title }}</li>
+            {% empty %}
+            <li>No journals in this notebook.</li>
+            {% endfor %}
+        </ul>
+
+
+        <p class="mb-0 mt-3"><strong>Canvases in this Notebook:</strong></p>
+        <ul>
+            {% for canvas in Notebook.canvas_set.all %}
+            <li>{{ canvas.title }}</li>
+            {% empty %}
+            <li>No canvases in this notebook.</li>
+            {% endfor %}
+        </ul>
+
+    </div>
+
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-danger mb-3">Delete</button>
+    </form>
+
+    <a role="button" href="{{ Notebook.get_absolute_url }}" class="btn btn-secondary">Cancel</a>
+</div>
+{% endblock %}
+```
+
+- This HTML code lists the Notebook and all of its contents for the user while asking if they're sure they want to delete the notebook or not
+
+
+**URL**
+- `path('notebook/<int:notebook_id>/delete_notebook', views.deleteNotebook, name='delete_notebook'),`
 
 # Views
 Views are integral component that helps determine what content is displayed depending on the web request being sent.
