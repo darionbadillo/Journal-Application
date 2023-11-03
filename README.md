@@ -3,9 +3,9 @@ Creating a journal application from the knowledge gained from my time in CS3300 
 
 Links:
 
-Github Repo: https://github.com/darionbadillo/Journal-Application
+[Github Repo](https://github.com/darionbadillo/Journal-Application)
 
-Kanban: https://github.com/users/darionbadillo/projects/2
+[Kanban](https://github.com/users/darionbadillo/projects/2)
 
 ## Welcome to the app
 Welcome to the Notebooking app. 
@@ -71,10 +71,10 @@ class Notebook(models.Model):
 
 
 In python, classes have certain attributes that define them. Here, a notebook contains `fields` for:
-    - `title`
-    - `about`
-    - making the notebook `private` 
-    - `color` choice. 
+- `title`
+- `about`
+- making the notebook `private` 
+- `color` choice. 
 
 These are all callable attributes that the user will define upon creation of said notebook.
 
@@ -82,5 +82,7 @@ Notice how notebooks are tied to a specific user. Users can have multiple differ
 
 # Views
 Views are integral component that helps determine what content is displayed depending on the web request being sent.
+### Detail Views
 
-## Detail Views
+
+### List Views
