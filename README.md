@@ -82,7 +82,32 @@ Notice how notebooks are tied to a specific user. Users can have multiple differ
 
 # Views
 Views are integral component that helps determine what content is displayed depending on the web request being sent.
-### Detail Views
+We are utilizing two generic type views called DetailViews and ListViews.
+- These allow for Simplicity, Reusability, and overall Consistency in our application. 
+### DetailViews
+**Purpose**
+- Essential for displaying a singular item. 
+- We will be using DetailViews to see all Notebooks, Journals, Canvases, and User information
+**Example**
+```
+class notebookDetailView(generic.DetailView):
+    model = Notebook 
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['journal_list'] = Journal.objects.all()
+        context['canvas_list'] = Canvas.objects.all()
+        return context
+```
+- Here we are using a tying the attribute `model` to an instance of a `Journal`. 
+- We can also see that Notebooks are tied together with a list of Journals and Canvases
 
-
-### List Views
+### ListViews
+**Purpose**
+- Used for dislplaying a list of items.
+- For example, we would use a list view to display ALL of the journals, or notebooks.
+**Example**
+```
+class JournalListView(generic.ListView):
+    model = Journal
+```
