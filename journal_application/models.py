@@ -2,6 +2,7 @@ from django.db import models
 from django.urls import reverse
 from tinymce.models import HTMLField
 from django.contrib.auth.models import AbstractUser
+from django.conf import settings
   
 COLOR_CHOICES = [
     ('red', 'Red'),
@@ -45,7 +46,7 @@ class Notebook(models.Model):
     def __str__(self):
         return self.title
 
-    #user = models.ForeignKey(User, on_delete=models.CASCADE, default = None)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, default = None, null = True)
     
     #Returns the URL to access a particular instance of MyModelName.
     #if you define this method then Django will automatically

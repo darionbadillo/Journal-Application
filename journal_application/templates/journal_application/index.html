@@ -5,7 +5,7 @@
 
 <h2>All Notebooks:</h2>
 <ul class="list-group">
-    {% for book in all_notebooks%}
+    {% for book in user.notebooks.all%}
     <li class="list-group-item">
         <strong>Title:</strong> <a href="{% url 'notebook-detail' book.id %}"
             style="color: {{ book.color }};">{{ book.title }}</a>

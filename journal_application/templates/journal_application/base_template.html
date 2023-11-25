@@ -43,7 +43,7 @@
                             My Notebooks
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="notebooksDropdown">
-                            {% for notebook in all_notebooks %}
+                            {% for notebook in user.notebooks.all %}
                             <!-- user.notebooks.all when implementing users-->
                             <li><a class="dropdown-item"
                                     href="{% url 'notebook-detail' pk=notebook.pk %}">{{ notebook.title }}</a></li>
@@ -53,6 +53,7 @@
                             </li>
                             <li><a class="dropdown-item" href="{% url 'create_notebook' %}">Create New Notebook</a></li>
                         </ul>
+                        <a href="{% url 'login' %}">Sign In</a>
                         <button id="darkModeToggle">Toggle Dark Mode</button>
                         <script src="{% static 'dark_mode.js' %}"></script>
                     </li>

@@ -57,6 +57,9 @@ ROOT_URLCONF = 'django_project.urls'
 
 AUTH_USER_MODEL = 'journal_application.User'
 
+LOGIN_REDIRECT_URL = '/' #redirects to home page after login
+LOGIN_URL = 'login'
+
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
