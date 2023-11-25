@@ -1,7 +1,6 @@
 from django.db import models
 from django.urls import reverse
 from tinymce.models import HTMLField
-from django.contrib.auth.models import AbstractUser, BaseUserManager
 from django.conf import settings
   
 COLOR_CHOICES = [
@@ -21,7 +20,7 @@ class Notebook(models.Model):
     about = models.CharField(max_length=1000, blank=True, default='')
     private = models.BooleanField(default=False)
     color = models.CharField(max_length=10, choices=COLOR_CHOICES, default='black')   
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, default=None, null=True)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
 
     def __str__(self):
         return self.title
