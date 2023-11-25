@@ -193,7 +193,7 @@ class CanvasListView(generic.ListView):
 class CanvasDetailView(generic.DetailView):
     model = Canvas
     
-def signup_view(request):
+def signupView(request):
     if request.method == 'POST':
         form = UserCreationForm(request.POST)
         if form.is_valid():
