@@ -10,7 +10,12 @@ from django.contrib.auth.decorators import login_required
 
 # Home page view
 def index(request):
-    all_notebooks = Notebook.objects.all()
+    if request.user.is_authenticated:
+        # Get notebooks for logged-in user
+        all_notebooks = Notebook.objects.filter(user=request.user)
+    else:
+        # Handle anonymous user case
+        all_notebooks = None 
     return render( request, 'journal_application/index.html', {'all_notebooks': all_notebooks})
 
 # Notebook views

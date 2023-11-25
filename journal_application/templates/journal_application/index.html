@@ -3,18 +3,24 @@
 {% block content %}
 <h1>Welcome to the Notebook Application</h1>
 
-<h2>All Notebooks:</h2>
 <ul class="list-group">
-    {% for book in user.notebooks.all%}
-    <li class="list-group-item">
-        <strong>Title:</strong> <a href="{% url 'notebook-detail' book.id %}"
-            style="color: {{ book.color }};">{{ book.title }}</a>
+    {% if all_notebooks %}
+        <h2>All Notebooks:</h2>
+        {% for book in all_notebooks%}
+        <li class="list-group-item">
+            <strong>Title:</strong> <a href="{% url 'notebook-detail' book.id %}"
+                style="color: {{ book.color }};">{{ book.title }}</a>
 
-        <a href="{% url 'update_notebook' book.id %}" class="btn btn-sm btn-outline-secondary float-right">Edit</a>
-        <a href="{% url 'delete_notebook' book.id %}" class="btn btn-sm btn-outline-danger float-right">Delete</a>
-    </li>
-
-    {%endfor%}
+            <a href="{% url 'update_notebook' book.id %}" class="btn btn-sm btn-outline-secondary float-right">Edit</a>
+            <a href="{% url 'delete_notebook' book.id %}" class="btn btn-sm btn-outline-danger float-right">Delete</a>
+            <a href="{% url 'create_notebook' %}" class="btn btn-primary">Create New Notebook</a>
+        </li>
+        {%endfor%}
+    {% else %}
+        <p>You are not logged in or you have no notebooks.</p>
+    {% endif %}
+    
 </ul>
 <a href="{% url 'create_notebook' %}" class="btn btn-primary">Create New Notebook</a>
+
 {% endblock %}
