@@ -5,27 +5,26 @@ from django.views import generic
 from .models import *
 from .forms import *
 from django.contrib.auth.forms import UserCreationForm
-from django.contrib.auth import authenticate, login
-    
+from django.contrib.auth import *
+from django.contrib.auth.decorators import login_required
+
 # Home page view
 def index(request):
     all_notebooks = Notebook.objects.all()
     return render( request, 'journal_application/index.html', {'all_notebooks': all_notebooks})
 
 # Notebook views
-
-# Creates a new Notebook
+@login_required
 def createNotebook(request):
     form = NotebookForm()
-    
+
     if request.method == 'POST':
         form = NotebookForm(request.POST)
         if form.is_valid():
-            # Save the form to create a Notebook instance
-            notebook = form.save()
+            notebook = form.save(commit=False)
+            notebook.user = request.user
             notebook.save()
-            # Redirect back to the notebook detail page
-            return redirect('notebook-detail', notebook.id)
+            return redirect('notebook-detail', pk=notebook.pk)
 
     context = {'form': form}
     return render(request, 'journal_application/notebook_form.html', context)
