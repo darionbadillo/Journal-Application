@@ -32,13 +32,13 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'journal_application',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'journal_application',
     'bootstrap5',
     'tinymce',
 ]
@@ -54,6 +54,8 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'django_project.urls'
+
+AUTH_USER_MODEL = 'journal_application.User'
 
 TEMPLATES = [
     {

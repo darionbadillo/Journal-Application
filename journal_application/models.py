@@ -1,6 +1,7 @@
 from django.db import models
 from django.urls import reverse
 from tinymce.models import HTMLField
+from django.contrib.auth.models import AbstractUser
   
 COLOR_CHOICES = [
     ('red', 'Red'),
@@ -12,25 +13,26 @@ COLOR_CHOICES = [
     ('brown', 'Brown'),
     ('black', 'Black'),
     ('pink', 'Pink'),
-    ('white', 'White')
 ]
 
-# Cannot implement yet because we need are not implementing users yet
-class User(models.Model):
+class User(AbstractUser):
+    username = models.CharField(max_length=50, blank=True, null=True, unique=True)
+    email = models.EmailField("Email", max_length=200, unique=True)
 
-    name = models.CharField(max_length=200)
-    email = models.CharField("Email", max_length=200)
-    
+    USERNAME_FIELD = 'email'
+    REQUIRED_FIELDS = ['username', 'first_name', 'last_name']
 
-    #Define default String to return the name for representing the Model object."
     def __str__(self):
-        return self.name
+        return "{}".format(self.email)
 
-    #Returns the URL to access a particular instance of MyModelName.
-    #if you define this method then Django will automatically
-    # add a "View on Site" button to the model's record editing screens in the Admin site
     def get_absolute_url(self):
         return reverse('user-detail', args=[str(self.id)])
+
+    def save(self, *args, **kwargs):
+        if not self.username:
+            self.username = None
+        super(User, self).save(*args, **kwargs)
+
     
 class Notebook(models.Model):
     
