@@ -16,16 +16,19 @@
         </div>
         {% endfor %}
 
-        <div class="mt-4">
+        <div class="mt-4 d-flex justify-content-between">
             <button type="submit" class="btn btn-primary">Submit</button>
+            <button type="button" class="btn btn-secondary" onclick="history.back();">Cancel</button>        
         </div>
     </form>
 </div>
 
+<!-- Include TinyMCE -->
+<script src="https://cdn.tiny.cloud/1/bpm2hgw7o4f2fglywlt64x4rxhw72ugbvhdxmun2t7cdp3p7/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
 <!-- Initialize TinyMCE -->
 <script>
   tinymce.init({
-    selector: 'textarea',  // Use the correct ID of your textarea
+    selector: 'textarea',  // Initializes TinyMCE for all textarea elements
     plugins: 'a11ychecker advcode advlist anchor autolink codesample fullscreen help image imagetools',
     toolbar: 'undo redo | formatselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | help',
     menubar: 'file edit view insert format tools table help',

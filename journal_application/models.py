@@ -16,10 +16,11 @@ COLOR_CHOICES = [
 ]
 
 # Cannot implement yet because we need are not implementing users yet
-""" class User(models.Model):
+class User(models.Model):
 
     name = models.CharField(max_length=200)
     email = models.CharField("Email", max_length=200)
+    
 
     #Define default String to return the name for representing the Model object."
     def __str__(self):
@@ -29,7 +30,7 @@ COLOR_CHOICES = [
     #if you define this method then Django will automatically
     # add a "View on Site" button to the model's record editing screens in the Admin site
     def get_absolute_url(self):
-        return reverse('user-detail', args=[str(self.id)]) """
+        return reverse('user-detail', args=[str(self.id)])
     
 class Notebook(models.Model):
     

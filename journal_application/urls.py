@@ -33,4 +33,8 @@ urlpatterns = [
     
     # TinyMCE urls
     path('tinymce/', include('tinymce.urls')),
+    
+    # User Authentication urls
+    path('login/', views.login_view, name='login'),
+    path('signup/', views.signup_view, name='signup'),
 ]
