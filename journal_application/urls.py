@@ -1,6 +1,6 @@
 from django.urls import path, include
 from . import views
-from django.contrib.auth import views as auth_views
+from django.contrib.auth.views import LoginView, LogoutView
 
 urlpatterns = [
 #path function defines a url pattern
@@ -36,6 +36,7 @@ urlpatterns = [
     path('tinymce/', include('tinymce.urls')),
     
     # User Authentication urls
-    path('login/', auth_views.LoginView.as_view(template_name='journal_application/login.html'), name='login'),
+    path('login/', LoginView.as_view(template_name='journal_application/login.html'), name='login'),
     path('signup/', views.signupView, name='signup'),
+    path('logout/', LogoutView.as_view(), name='logout'),
 ]

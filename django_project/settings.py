@@ -55,8 +55,6 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'django_project.urls'
 
-AUTH_USER_MODEL = 'journal_application.User'
-
 LOGIN_REDIRECT_URL = '/' #redirects to home page after login
 LOGIN_URL = 'login'
 
@@ -92,6 +90,16 @@ DATABASES = {
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
+
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',
+]
+
+# Login and Logout settings
+LOGIN_REDIRECT_URL = 'index'
+LOGOUT_REDIRECT_URL = 'index'
+LOGIN_URL = 'login'
+LOGOUT_URL = 'logout'
 
 AUTH_PASSWORD_VALIDATORS = [
     {

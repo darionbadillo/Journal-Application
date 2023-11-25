@@ -206,7 +206,7 @@ def signupView(request):
             return redirect('index')  # Redirect to a home page
     else:
         form = UserCreationForm()
-    return render(request, 'signup.html', {'form': form})
+    return render(request, 'journal_application/signup.html', {'form': form})
 
 def login_view(request):
     if request.method == 'POST':

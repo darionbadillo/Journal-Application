@@ -1,22 +1,66 @@
 {% extends 'journal_application/base_template.html' %}
 
 {% block content %}
-<h2>Sign up Form</h2>
-<form method="post">
-    {% csrf_token %}
-    {% for field in form %}
-    <p>
-        {{ field.label_tag }}<br>
-        {{ field }}
-        {% if field.help_text %}
-        <small style="color: grey">{{ field.help_text }}</small>
-        {% endif %}
-        {% for error in field.errors %}
-        <p style="color: red">{{ error }}</p>
+<style>
+    .signup-form {
+        width: 100%;
+        max-width: 400px;
+        margin: auto;
+        padding: 15px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+    .signup-form h2 {
+        text-align: center;
+        margin-bottom: 20px;
+    }
+    .signup-form label {
+        display: block;
+        margin-bottom: 5px;
+    }
+    .signup-form input, .signup-form button {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 15px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+    }
+    .signup-form button {
+        background-color: #007bff;
+        color: white;
+        border: none;
+        cursor: pointer;
+    }
+    .signup-form button:hover {
+        background-color: #0056b3;
+    }
+    .signup-form .error {
+        color: red;
+        font-size: 0.85em;
+    }
+    .signup-form .help-text {
+        color: grey;
+        font-size: 0.85em;
+    }
+</style>
+
+<div class="signup-form">
+    <h2>Sign up Form</h2>
+    <form method="post">
+        {% csrf_token %}
+        {% for field in form %}
+            <div>
+                {{ field.label_tag }}
+                {{ field }}
+                {% if field.help_text %}
+                    <small class="help-text">{{ field.help_text }}</small>
+                {% endif %}
+                {% for error in field.errors %}
+                    <div class="error">{{ error }}</div>
+                {% endfor %}
+            </div>
         {% endfor %}
-    </p>
-    {% endfor %}
-    <button type="submit">Sign up</button>
-</form>
+        <button type="submit">Sign up</button>
+    </form>
+</div>
 
 {% endblock %}

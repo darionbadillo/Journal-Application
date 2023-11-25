@@ -1,5 +1,6 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
+from django.contrib.auth.models import User
 from .models import *
 from .forms import CustomUserCreationForm, CustomUserChangeForm
 
@@ -10,7 +11,6 @@ class CustomUserAdmin(UserAdmin):
     model = User
     list_display = ['email', 'username', 'first_name', 'last_name',]
 
-admin.site.register(User, CustomUserAdmin)  
 admin.site.register(Notebook)
 admin.site.register(Journal)
 admin.site.register(Canvas)
