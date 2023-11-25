@@ -1,4 +1,4 @@
-from django.urls import path
+from django.urls import path, include
 from . import views
 
 urlpatterns = [
@@ -30,4 +30,7 @@ urlpatterns = [
     path('notebook/create_notebook', views.createNotebook, name='create_notebook'),
     path('notebook/update_notebook/<int:notebook_id>/', views.updateNotebook, name='update_notebook'),
     path('notebook/<int:notebook_id>/delete_notebook', views.deleteNotebook, name='delete_notebook'),
+    
+    # TinyMCE urls
+    path('tinymce/', include('tinymce.urls')),
 ]

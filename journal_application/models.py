@@ -1,5 +1,6 @@
 from django.db import models
 from django.urls import reverse
+from tinymce.models import HTMLField
   
 COLOR_CHOICES = [
     ('red', 'Red'),
@@ -52,7 +53,7 @@ class Notebook(models.Model):
 class Journal(models.Model):
     title = models.CharField(max_length=200)
     description = models.CharField(max_length=1000, blank = False, default='')
-    
+    content = HTMLField(blank = True, default='')
     #Define default String to return the name for representing the Model object."
     def __str__(self):
         return self.title
