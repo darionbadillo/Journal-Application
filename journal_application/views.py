@@ -1,3 +1,4 @@
+from io import BytesIO
 from typing import Any
 from django.shortcuts import *
 from django.http import *
@@ -7,6 +8,54 @@ from .forms import *
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import *
 from django.contrib.auth.decorators import login_required
+from reportlab.lib.pagesizes import letter
+from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer
+from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
+from django.shortcuts import get_object_or_404
+
+
+def journalPDFView(request, pk):
+    journal = get_object_or_404(Journal, pk=pk)
+    
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = 'inline; filename="journal_{}.pdf"'.format(journal.pk)
+    
+    buffer = BytesIO()
+
+    # Create a PDF with `SimpleDocTemplate`
+    doc = SimpleDocTemplate(buffer, pagesize=letter)
+
+    # Get a style sheet
+    styles = getSampleStyleSheet()
+    styles.add(ParagraphStyle(name='Wrap', wordWrap='CJK', spaceAfter=20))
+    
+    # Create a list to hold the elements for the PDF
+    elements = []
+
+    # Title
+    title = Paragraph(journal.title, styles['Title'])
+    elements.append(title)
+
+    # Description
+    description = Paragraph(journal.description, styles['Heading2'])
+    elements.append(description)
+
+    # Content
+    content = Paragraph(journal.content, styles['Wrap'])
+    elements.append(content)
+
+    # Add a spacer
+    elements.append(Spacer(1, 12))
+
+    # Build the PDF
+    doc.build(elements)
+    
+    # Get the value of BytesIO buffer and write it to the response.
+    pdf = buffer.getvalue()
+    buffer.close()
+    response.write(pdf)
+
+    return response
 
 # Home page view
 def index(request):
@@ -191,7 +240,14 @@ class JournalListView(generic.ListView):
     model = Journal
 class JournalDetailView(generic.DetailView):
     model = Journal
+    notebook = Journal.notebook
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        journal = context['journal']
+        context['notebook'] = journal.notebook
+        return context
+    
 class CanvasListView(generic.ListView):
     model = Canvas
 class CanvasDetailView(generic.DetailView):

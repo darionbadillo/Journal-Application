@@ -4,13 +4,8 @@ from tinymce.models import HTMLField
 from django.conf import settings
   
 COLOR_CHOICES = [
-    ('red', 'Red'),
     ('blue', 'Blue'),
-    ('green', 'Green'),
-    ('purple', 'Purple'),
     ('yellow', 'Yellow'),
-    ('orange', 'Orange'),
-    ('brown', 'Brown'),
     ('black', 'Black'),
     ('pink', 'Pink'),
 ]

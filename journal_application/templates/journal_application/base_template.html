@@ -65,7 +65,7 @@
                                 My Notebooks
                             </a>
                             <ul class="dropdown-menu" aria-labelledby="notebooksDropdown">
-                                {% for notebook in user.notebooks.all %}
+                                {% for notebook in all_notebooks %}
                                     <li><a class="dropdown-item" href="{% url 'notebook-detail' pk=notebook.pk %}">{{ notebook.title }}</a></li>
                                 {% endfor %}
                                 <li><hr class="dropdown-divider"></li>

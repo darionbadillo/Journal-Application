@@ -11,13 +11,19 @@
 
     <div class="mb-3">
         <h3>Notebook:</h3>
-        <p><a href="{{ journal.notebook.get_absolute_url }}" class="btn btn-primary">{{ journal.notebook.title }}</a></p>
+        <p><a href="{{ journal.notebook.get_absolute_url }}" class="btn btn-primary">{{ journal.notebook.title }}</a>
+        </p>
     </div>
 
     <!-- Displaying the content of the journal -->
     <div class="journal-content border rounded p-3" style="background-color: #f8f9fa;">
         {{ journal.content|safe }}
     </div>
+    <a class="btn btn-sm btn-outline-primary mr-2" href="{% url 'update_journal' notebook.id journal.id %}"
+        role="button">Update</a>
+    <a class="btn btn-sm btn-outline-danger" href="{% url 'delete_journal' notebook.id journal.id %}"
+        role="button">Delete</a>
+    <a href="{% url 'journal_pdf' journal.id %}" class="btn btn-primary">Download PDF</a>
 </div>
 
 {% endblock %}

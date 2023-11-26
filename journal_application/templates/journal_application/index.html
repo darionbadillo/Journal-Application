@@ -13,7 +13,6 @@
 
             <a href="{% url 'update_notebook' book.id %}" class="btn btn-sm btn-outline-secondary float-right">Edit</a>
             <a href="{% url 'delete_notebook' book.id %}" class="btn btn-sm btn-outline-danger float-right">Delete</a>
-            <a href="{% url 'create_notebook' %}" class="btn btn-primary">Create New Notebook</a>
         </li>
         {%endfor%}
     {% else %}

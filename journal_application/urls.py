@@ -39,4 +39,7 @@ urlpatterns = [
     path('login/', LoginView.as_view(template_name='journal_application/login.html'), name='login'),
     path('signup/', views.signupView, name='signup'),
     path('logout/', LogoutView.as_view(), name='logout'),
+    
+    # Print Url
+    path('journals/<int:pk>/pdf/', views.journalPDFView, name='journal_pdf'),
 ]
