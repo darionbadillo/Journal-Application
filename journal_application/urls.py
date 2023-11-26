@@ -1,5 +1,6 @@
-from django.urls import path
+from django.urls import path, include
 from . import views
+from django.contrib.auth.views import LoginView, LogoutView
 
 urlpatterns = [
 #path function defines a url pattern
@@ -30,4 +31,15 @@ urlpatterns = [
     path('notebook/create_notebook', views.createNotebook, name='create_notebook'),
     path('notebook/update_notebook/<int:notebook_id>/', views.updateNotebook, name='update_notebook'),
     path('notebook/<int:notebook_id>/delete_notebook', views.deleteNotebook, name='delete_notebook'),
+    
+    # TinyMCE urls
+    path('tinymce/', include('tinymce.urls')),
+    
+    # User Authentication urls
+    path('login/', LoginView.as_view(template_name='journal_application/login.html'), name='login'),
+    path('signup/', views.signupView, name='signup'),
+    path('logout/', LogoutView.as_view(), name='logout'),
+    
+    # Print Url
+    path('journals/<int:pk>/pdf/', views.journalPDFView, name='journal_pdf'),
 ]

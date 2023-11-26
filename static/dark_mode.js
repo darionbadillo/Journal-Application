@@ -8,7 +8,7 @@ let darkMode = localStorage.getItem('darkMode') === 'enabled';
 
 // Constantly ensures that dark mode is enabled/disabled
 if (darkMode) {
-    document.body.classList.add('bg-dark', 'text-light');
+    document.body.classList.add('bg-dark', 'text-dark');
 }
 
 // Toggle the darkMode flag
