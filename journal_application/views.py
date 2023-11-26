@@ -1,29 +1,84 @@
+from io import BytesIO
 from typing import Any
 from django.shortcuts import *
-from django.http import HttpResponse
+from django.http import *
 from django.views import generic
 from .models import *
 from .forms import *
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth import *
+from django.contrib.auth.decorators import login_required
+from reportlab.lib.pagesizes import letter
+from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer
+from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
+from django.shortcuts import get_object_or_404
+
+
+def journalPDFView(request, pk):
+    journal = get_object_or_404(Journal, pk=pk)
     
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = 'inline; filename="journal_{}.pdf"'.format(journal.pk)
+    
+    buffer = BytesIO()
+
+    # Create a PDF with `SimpleDocTemplate`
+    doc = SimpleDocTemplate(buffer, pagesize=letter)
+
+    # Get a style sheet
+    styles = getSampleStyleSheet()
+    styles.add(ParagraphStyle(name='Wrap', wordWrap='CJK', spaceAfter=20))
+    
+    # Create a list to hold the elements for the PDF
+    elements = []
+
+    # Title
+    title = Paragraph(journal.title, styles['Title'])
+    elements.append(title)
+
+    # Description
+    description = Paragraph(journal.description, styles['Heading2'])
+    elements.append(description)
+
+    # Content
+    content = Paragraph(journal.content, styles['Wrap'])
+    elements.append(content)
+
+    # Add a spacer
+    elements.append(Spacer(1, 12))
+
+    # Build the PDF
+    doc.build(elements)
+    
+    # Get the value of BytesIO buffer and write it to the response.
+    pdf = buffer.getvalue()
+    buffer.close()
+    response.write(pdf)
+
+    return response
+
 # Home page view
 def index(request):
-    all_notebooks = Notebook.objects.all()
+    if request.user.is_authenticated:
+        # Get notebooks for logged-in user
+        all_notebooks = Notebook.objects.filter(user=request.user)
+    else:
+        # Handle anonymous user case
+        all_notebooks = None 
     return render( request, 'journal_application/index.html', {'all_notebooks': all_notebooks})
 
 # Notebook views
-
-# Creates a new Notebook
+@login_required
 def createNotebook(request):
     form = NotebookForm()
-    
+
     if request.method == 'POST':
         form = NotebookForm(request.POST)
         if form.is_valid():
-            # Save the form to create a Notebook instance
-            notebook = form.save()
+            notebook = form.save(commit=False)
+            notebook.user = request.user
             notebook.save()
-            # Redirect back to the notebook detail page
-            return redirect('notebook-detail', notebook.id)
+            return redirect('notebook-detail', pk=notebook.pk)
 
     context = {'form': form}
     return render(request, 'journal_application/notebook_form.html', context)
@@ -185,8 +240,42 @@ class JournalListView(generic.ListView):
     model = Journal
 class JournalDetailView(generic.DetailView):
     model = Journal
+    notebook = Journal.notebook
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        journal = context['journal']
+        context['notebook'] = journal.notebook
+        return context
+    
 class CanvasListView(generic.ListView):
     model = Canvas
 class CanvasDetailView(generic.DetailView):
     model = Canvas
+    
+def signupView(request):
+    if request.method == 'POST':
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            form.save()
+            # Optionally log the user in
+            username = form.cleaned_data.get('username')
+            password = form.cleaned_data.get('password1')
+            user = authenticate(username=username, password=password)
+            login(request, user)
+            return redirect('index')  # Redirect to a home page
+    else:
+        form = UserCreationForm()
+    return render(request, 'journal_application/signup.html', {'form': form})
+
+def login_view(request):
+    if request.method == 'POST':
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            form.save()
+            # Optionally log the user in
+            username = form.cleaned_data.get('username')
+            password = form.cleaned_data.get('password1')
+            user = authenticate(username=username, password=password)
+            login(request, user)
+            return redirect('index')  # Redirect to a home page
